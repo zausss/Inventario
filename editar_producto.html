@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Producto | Inventario Hilos</title>
+    <link rel="stylesheet" href="CSS/style.css"> </head>
+<body>
+    <div id="app">
+        <div class="container">
+            <aside class="sidebar">
+                <div class="user-info">
+                    <img src="assets/imágenes/íconos/portrait.png" alt="Foto de usuario" class="user-icon">
+                    <p>Hola, Yurany García</p>
+                </div>
+                <nav class="menu">
+                    <a href="index.html" class="menu-btn">Menú</a>
+                    <div class="menu-group">
+                        <button class="menu-btn active">Gestión de productos <span class="icon">&#9662;</span></button>
+                        <div class="submenu" style="max-height: 300px;">
+                            <a href="categorias.html" class="submenu-btn">Categorías</a>
+                            <a href="productos.html" class="submenu-btn">Productos</a>
+                        </div>
+                    </div>
+                    <div class="menu-group">
+                        <button class="menu-btn">Existencias <span class="icon">&#9662;</span></button>
+                        <div class="submenu">
+                            <a href="existencias.html" class="submenu-btn">Existencias</a>
+                        </div>
+                    </div>
+                </nav>
+                <div class="footer">
+                    <p>Sistema de Inventario v1.0</p>
+                </div>
+            </aside>
+            <main class="main-content">
+                <section class="content-section">
+                    <div class="section-header">
+                        <h1>Editar Producto</h1>
+                    </div>
+                    <div class="form-container">
+                        <form id="editar-producto-form">
+                            <input type="hidden" id="producto-id">
+                            <div class="form-group">
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" id="nombre" name="nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoria">Categoría:</label>
+                                <input type="text" id="categoria" name="categoria">
+                            </div>
+                            <div class="form-group">
+                                <label for="precio">Precio:</label>
+                                <input type="number" id="precio" name="precio" step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label for="stock">Stock:</label>
+                                <input type="number" id="stock" name="stock">
+                            </div>
+                            <button type="submit" class="btn-primary">Guardar Cambios</button>
+                            <a href="productos.html" class="btn-secondary">Cancelar</a>
+                        </form>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script src="js/editar_producto.js"></script> </body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario Hilos | Existencias</title>
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <aside class="sidebar">
+                <div class="user-info">
+                    <img src="assets/imágenes/íconos/portrait.png" alt="Foto de usuario" class="user-icon">
+                    <p>Hola, Yurany García</p>
+                </div>
+
+                <nav class="menu">
+                    <a href="index.html" class="menu-btn">
+                        Menú
+                    </a>
+
+                    <div class="menu-group">
+                        <button class="menu-btn">
+                            Gestión de productos
+                            <span class="icon">&#9662;</span>
+                        </button>
+                        <div class="submenu">
+                            <a href="categorias.html" class="submenu-btn">Categorías</a>
+                            <a href="productos.html" class="submenu-btn">Productos</a>
+                        </div>
+                    </div>
+
+                    <div class="menu-group">
+                        <button class="menu-btn active">
+                            Existencias
+                            <span class="icon">&#9662;</span>
+                        </button>
+                        <div class="submenu" style="max-height: 300px;">
+                            <a href="existencias.html" class="submenu-btn active">Existencias</a>
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="footer">
+                    <p>Sistema de Inventario v1.0</p>
+                </div>
+            </aside>
+
+            <main class="main-content">
+                <section class="content-section">
+                    <div class="section-header">
+                        <h1>Listado de Existencias</h1>
+                        <div class="actions">
+                            <div class="search-box">
+                                <input type="text" id="buscar-existencia" placeholder="Buscar producto...">
+                                <button class="search-btn">Buscar</button>
+                            </div>
+                            <a href="nuevo_producto.html" class="btn-primary">
+                                <span>+</span> Nuevo Producto
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre del Producto</th>
+                                    <th>Categoría</th>
+                                    <th>Stock Actual</th>
+                                </tr>
+                            </thead>
+                            <tbody id="existencias-list">
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const existenciasList = document.getElementById('existencias-list');
+
+            async function cargarExistencias() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/productos');
+                    const productos = await response.json();
+
+                    existenciasList.innerHTML = '';
+
+                    productos.forEach(producto => {
+                        const newRow = existenciasList.insertRow();
+                        const idCell = newRow.insertCell(0);
+                        const nombreCell = newRow.insertCell(1);
+                        const categoriaCell = newRow.insertCell(2);
+                        const stockCell = newRow.insertCell(3);
+
+                        idCell.textContent = producto._id;
+                        nombreCell.textContent = producto.nombre;
+                        categoriaCell.textContent = producto.categoria;
+                        stockCell.textContent = producto.stock;
+                    });
+                } catch (error) {
+                    console.error('Error al cargar las existencias:', error);
+                    existenciasList.innerHTML = '<tr><td colspan="4">Error al cargar las existencias.</td></tr>';
+                }
+            }
+
+            cargarExistencias();
+        });
+    </script>
+</body>
+</html>

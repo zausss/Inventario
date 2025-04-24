@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventario Hilos | Sistema de Gestión</title>
+  <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+  <div id="app">
+    <div class="container">
+      <aside class="sidebar">
+        <div class="user-info">
+          <img src="assets/imágenes/íconos/portrait.png" alt="Foto de usuario" class="user-icon">
+          <p>Hola, Yurany García</p>
+        </div>
+      
+        <!-- MENÚ CORREGIDO (solo uno) -->
+        <nav class="menu">
+          <a href="index.html" class="menu-btn">
+            menú
+          </a>
+          
+          <div class="menu-group">
+            <button class="menu-btn">
+              Gestión de productos
+              <span class="icon">&#9662;</span>
+            </button>
+            <div class="submenu">
+              <a href="categorias.html" class="submenu-btn">Categorías</a>
+              <a href="productos.html" class="submenu-btn">Productos</a>
+            </div>
+          </div>
+
+         <div class="menu-group">
+          <button class="menu-btn">
+            Existencias
+            <span class="icon">&#9662;</span>
+          </button>
+          <div class="submenu">
+            <a href="existencias.html" class="submenu-btn">Existencias</a>
+            
+          </div>
+         </div>
+        </nav>
+        
+        <div class="footer">
+          <p>Sistema de Inventario v1.0</p>
+        </div>
+      </aside>
+      
+      <main class="main-content">
+        <section class="home-section">
+          <h1>Bienvenida al Sistema de Inventario</h1>
+          <p>Selecciona una opción del menú para comenzar</p>
+          <div class="dashboard-stats">
+            <div class="stat-card">
+              <h3>Productos registrados</h3>
+              <p class="stat-value" id="total-productos">0</p>
+            </div>
+            <div class="stat-card">
+              <h3>Existencias totales</h3>
+              <p class="stat-value" id="total-existencias">0</p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+  <!-- SOLO common.js, eliminamos app.js -->
+  <script src="js/common.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

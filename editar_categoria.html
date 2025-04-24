@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario Hilos | Editar Categoría</title>
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <aside class="sidebar">
+                <div class="user-info">
+                    <img src="assets/imágenes/íconos/portrait.png" alt="Foto de usuario" class="user-icon">
+                    <p>Hola, Yurany García</p>
+                </div>
+
+                <nav class="menu">
+                    <a href="index.html" class="menu-btn">
+                        Menú
+                    </a>
+
+                    <div class="menu-group">
+                        <button class="menu-btn active">
+                            Gestión de productos
+                            <span class="icon">&#9662;</span>
+                        </button>
+                        <div class="submenu" style="max-height: 300px;">
+                            <a href="categorias.html" class="submenu-btn">Categorías</a>
+                            <a href="productos.html" class="submenu-btn active">Productos</a>
+                        </div>
+                    </div>
+
+                    <div class="menu-group">
+                        <button class="menu-btn">
+                            Existencias
+                            <span class="icon">&#9662;</span>
+                        </button>
+                        <div class="submenu">
+                            <a href="existencias.html" class="submenu-btn">Existencias</a>
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="footer">
+                    <p>Sistema de Inventario v1.0</p>
+                </div>
+            </aside>
+
+            <main class="main-content">
+                <section class="content-section">
+                    <div class="section-header">
+                        <h1>Editar Categoría</h1>
+                        <div class="actions">
+                            <a href="categorias.html" class="btn-secondary">Cancelar</a>
+                        </div>
+                    </div>
+
+                    <div class="form-container">
+                        <form id="editar-categoria-form">
+                            <input type="hidden" id="categoria-id">
+                            <div class="form-group">
+                                <label for="categoria-nombre">Nombre de la categoría</label>
+                                <input type="text" id="categoria-nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoria-descripcion">Descripción (opcional)</label>
+                                <textarea id="categoria-descripcion" rows="3"></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary">Guardar Cambios</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const editarCategoriaForm = document.getElementById('editar-categoria-form');
+            const categoriaIdInput = document.getElementById('categoria-id');
+            const nombreInput = document.getElementById('categoria-nombre');
+            const descripcionInput = document.getElementById('categoria-descripcion');
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+
+            async function cargarCategoria(id) {
+                try {
+                    const response = await fetch(`http://localhost:3000/api/categorias/${id}`);
+                    if (response.ok) {
+                        const categoria = await response.json();
+                        categoriaIdInput.value = categoria._id; // Guardar el ID completo
+                        nombreInput.value = categoria.nombre;
+                        descripcionInput.value = categoria.descripcion || '';
+                    } else {
+                        alert('Error al cargar la categoría para editar.');
+                        window.location.href = 'categorias.html';
+                    }
+                } catch (error) {
+                    console.error('Error al cargar la categoría:', error);
+                    alert('Error al cargar la categoría.');
+                    window.location.href = 'categorias.html';
+                }
+            }
+
+            if (id) {
+                cargarCategoria(id);
+            } else {
+                alert('ID de categoría no válido.');
+                window.location.href = 'categorias.html';
+            }
+
+            editarCategoriaForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const nombre = nombreInput.value.trim();
+                const descripcion = descripcionInput.value.trim();
+                const categoriaId = categoriaIdInput.value;
+
+                if (nombre) {
+                    try {
+                        const response = await fetch(`http://localhost:3000/api/categorias/${categoriaId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ nombre: nombre, descripcion: descripcion }),
+                        });
+
+                        if (response.ok) {
+                            alert('Categoría actualizada con éxito.');
+                            window.location.href = 'categorias.html';
+                        } else {
+                            const errorData = await response.json();
+                            alert('Error al actualizar la categoría: ' + (errorData.message || ''));
+                        }
+                    } catch (error) {
+                        console.error('Error al enviar la petición para actualizar categoría:', error);
+                        alert('Error al actualizar la categoría.');
+                    }
+                } else {
+                    alert('El nombre de la categoría es obligatorio.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

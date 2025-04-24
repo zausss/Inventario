@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario Hilos | Categorías</title>
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <aside class="sidebar">
+                <div class="user-info">
+                    <img src="assets/imágenes/íconos/portrait.png" alt="Foto de usuario" class="user-icon">
+                    <p>Hola, Yurany García</p>
+                </div>
+
+                <nav class="menu">
+                    <a href="index.html" class="menu-btn">
+                        Menú
+                    </a>
+
+                    <div class="menu-group">
+                        <button class="menu-btn active">
+                            Gestión de productos
+                            <span class="icon">&#9662;</span>
+                        </button>
+                        <div class="submenu" style="max-height: 300px;">
+                            <a href="categorias.html" class="submenu-btn active">Categorías</a>
+                            <a href="productos.html" class="submenu-btn">Productos</a>
+                        </div>
+                    </div>
+
+                    <div class="menu-group">
+                        <button class="menu-btn">
+                            Existencias
+                            <span class="icon">&#9662;</span>
+                        </button>
+                        <div class="submenu">
+                            <a href="existencias.html" class="submenu-btn">Existencias</a>
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="footer">
+                    <p>Sistema de Inventario v1.0</p>
+                </div>
+            </aside>
+
+            <main class="main-content">
+                <section class="content-section">
+                    <div class="section-header">
+                        <h1>Lista de Categorías</h1>
+                        <div class="actions">
+                            <div class="search-box">
+                                <input type="text" id="buscar-categoria" placeholder="Buscar categoría...">
+                                <button class="search-btn">Buscar</button>
+                            </div>
+                            <a href="nueva_categoria.html" class="btn-primary">
+                                <span>+</span> Nueva Categoría
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Productos</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categorias-list">
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoriasList = document.getElementById('categorias-list');
+
+            async function cargarCategorias() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/categorias');
+                    const categorias = await response.json();
+
+                    categoriasList.innerHTML = '';
+
+                    categorias.forEach(categoria => {
+                        const newRow = categoriasList.insertRow();
+                        const idCell = newRow.insertCell(0);
+                        const nombreCell = newRow.insertCell(1);
+                        const descripcionCell = newRow.insertCell(2);
+                        const productosCell = newRow.insertCell(3);
+                        const accionesCell = newRow.insertCell(4);
+
+                        idCell.textContent = categoria._id.substring(0, 8);
+                        nombreCell.textContent = categoria.nombre;
+                        descripcionCell.textContent = categoria.descripcion || '';
+                        productosCell.textContent = 0; // Necesitaríamos otra API para obtener la cantidad de productos por categoría
+
+                        const editButton = document.createElement('button');
+                        editButton.textContent = 'Editar';
+                        editButton.classList.add('action-btn', 'edit-btn');
+                        editButton.addEventListener('click', () => {
+                            window.location.href = `editar_categoria.html?id=${categoria._id}`; // Usar el ID completo
+                        });
+
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Eliminar';
+                        deleteButton.classList.add('action-btn', 'delete-btn');
+                        deleteButton.addEventListener('click', async () => {
+                            if (confirm(`¿Estás seguro de que quieres eliminar la categoría "${categoria.nombre}"?`)) {
+                                try {
+                                    const response = await fetch(`http://localhost:3000/api/categorias/${categoria._id}`, {
+                                        method: 'DELETE',
+                                    });
+                                    if (response.ok) {
+                                        alert('Categoría eliminada con éxito.');
+                                        cargarCategorias(); // Recargar la lista
+                                    } else {
+                                        const errorData = await response.json();
+                                        alert('Error al eliminar la categoría: ' + (errorData.message || ''));
+                                    }
+                                } catch (error) {
+                                    console.error('Error al enviar la petición para eliminar categoría:', error);
+                                    alert('Error al eliminar la categoría.');
+                                }
+                            }
+                        });
+
+                        accionesCell.appendChild(editButton);
+                        accionesCell.appendChild(deleteButton);
+                    });
+                } catch (error) {
+                    console.error('Error al cargar las categorías:', error);
+                    categoriasList.innerHTML = '<tr><td colspan="5">Error al cargar las categorías.</td></tr>';
+                }
+            }
+
+            cargarCategorias();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario Hilos | Nueva Categoría</title>
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <aside class="sidebar">
+                <div class="user-info">
+                    <img src="assets/imágenes/íconos/portrait.png" alt="Foto de usuario" class="user-icon">
+                    <p>Hola, Yurany García</p>
+                </div>
+
+                <nav class="menu">
+                    <a href="index.html" class="menu-btn">
+                        Menú
+                    </a>
+
+                    <div class="menu-group">
+                        <button class="menu-btn active">
+                            Gestión de productos
+                            <span class="icon">&#9662;</span>
+                        </button>
+                        <div class="submenu" style="max-height: 300px;">
+                            <a href="categorias.html" class="submenu-btn">Categorías</a>
+                            <a href="productos.html" class="submenu-btn active">Productos</a>
+                        </div>
+                    </div>
+
+                    <div class="menu-group">
+                        <button class="menu-btn">
+                            Existencias
+                            <span class="icon">&#9662;</span>
+                        </button>
+                        <div class="submenu">
+                            <a href="existencias.html" class="submenu-btn">Existencias</a>
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="footer">
+                    <p>Sistema de Inventario v1.0</p>
+                </div>
+            </aside>
+
+            <main class="main-content">
+                <section class="content-section">
+                    <div class="section-header">
+                        <h1>Nueva Categoría</h1>
+                        <div class="actions">
+                            <a href="categorias.html" class="btn-secondary">Cancelar</a>
+                        </div>
+                    </div>
+
+                    <div class="form-container">
+                        <form id="categoria-form">
+                            <input type="hidden" id="categoria-id">
+                            <div class="form-group">
+                                <label for="categoria-nombre">Nombre de la categoría</label>
+                                <input type="text" id="categoria-nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoria-descripcion">Descripción (opcional)</label>
+                                <textarea id="categoria-descripcion" rows="3"></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoriaForm = document.getElementById('categoria-form');
+            if (categoriaForm) {
+                categoriaForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const nombre = document.getElementById('categoria-nombre').value.trim();
+                    const descripcion = document.getElementById('categoria-descripcion').value.trim();
+    
+                    if (nombre) {
+                        try {
+                            const response = await fetch('http://localhost:3000/api/categorias', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ nombre: nombre, descripcion: descripcion }),
+                            });
+    
+                            if (response.ok) {
+                                alert('Categoría creada con éxito.');
+                                window.location.href = 'categorias.html';
+                            } else {
+                                const errorData = await response.json();
+                                alert('Error al crear la categoría: ' + (errorData.message || ''));
+                            }
+                        } catch (error) {
+                            console.error('Error al enviar la petición para crear categoría:', error);
+                            alert('Error al crear la categoría.');
+                        }
+                    } else {
+                        alert('El nombre de la categoría es obligatorio.');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
