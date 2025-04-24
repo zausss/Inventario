@@ -80,40 +80,42 @@
     <script src="js/common.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const categoriaForm = document.getElementById('categoria-form');
-            if (categoriaForm) {
-                categoriaForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    const nombre = document.getElementById('categoria-nombre').value.trim();
-                    const descripcion = document.getElementById('categoria-descripcion').value.trim();
-    
-                    if (nombre) {
-                        try {
-                            const response = await fetch('http://localhost:3000/api/categorias', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({ nombre: nombre, descripcion: descripcion }),
-                            });
-    
-                            if (response.ok) {
-                                alert('Categoría creada con éxito.');
-                                window.location.href = 'categorias.html';
-                            } else {
-                                const errorData = await response.json();
-                                alert('Error al crear la categoría: ' + (errorData.message || ''));
-                            }
-                        } catch (error) {
-                            console.error('Error al enviar la petición para crear categoría:', error);
-                            alert('Error al crear la categoría.');
-                        }
-                    } else {
-                        alert('El nombre de la categoría es obligatorio.');
-                    }
-                });
-            }
+          const categoriaForm = document.getElementById('categoria-form');
+          if (categoriaForm) {
+            categoriaForm.addEventListener('submit', async function(e) {
+              e.preventDefault();
+              const nombre = document.getElementById('categoria-nombre').value.trim();
+              const descripcion = document.getElementById('categoria-descripcion').value.trim();
+      
+              if (nombre) {
+                try {
+                  // Modificamos la URL para que apunte a la Netlify Function
+                  const response = await fetch('/.netlify/functions/crear_categoria', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ nombre: nombre, descripcion: descripcion }),
+                  });
+      
+                  const data = await response.json();
+      
+                  if (response.ok) {
+                    alert('Categoría creada con éxito.');
+                    window.location.href = 'categorias.html';
+                  } else {
+                    alert('Error al crear la categoría: ' + (data.message || ''));
+                  }
+                } catch (error) {
+                  console.error('Error al enviar la petición para crear categoría:', error);
+                  alert('Error al crear la categoría.');
+                }
+              } else {
+                alert('El nombre de la categoría es obligatorio.');
+              }
+            });
+          }
         });
-    </script>
+      </script>
 </body>
 </html>
