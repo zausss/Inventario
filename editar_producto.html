@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Producto | Inventario Hilos</title>
-    <link rel="stylesheet" href="CSS/style.css"> </head>
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
 <body>
     <div id="app">
         <div class="container">
@@ -14,18 +15,18 @@
                     <p>Hola, Yurany García</p>
                 </div>
                 <nav class="menu">
-                    <a href="index.html" class="menu-btn">Menú</a>
+                    <a href="index.html" class="menu-btn"><span style="vertical-align:middle;margin-right:10px;"><svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path fill="#222" d="M3 12l9-9 9 9-1.41 1.41L12 5.83l-7.59 7.58z"/></svg></span>Menú</a>
                     <div class="menu-group">
-                        <button class="menu-btn active">Gestión de productos <span class="icon">&#9662;</span></button>
+                        <button class="menu-btn active"><span style="vertical-align:middle;margin-right:10px;"><svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path fill="#222" d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></svg></span>Gestión de productos<span class="icon">&#9662;</span></button>
                         <div class="submenu" style="max-height: 300px;">
-                            <a href="categorias.html" class="submenu-btn">Categorías</a>
-                            <a href="productos.html" class="submenu-btn">Productos</a>
+                            <a href="categorias.html" class="submenu-btn"><span style="vertical-align:middle;margin-right:8px;"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path fill="#222" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg></span>Categorías</a>
+                            <a href="productos.html" class="submenu-btn active"><span style="vertical-align:middle;margin-right:8px;"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path fill="#222" d="M16 6V4a4 4 0 0 0-8 0v2H4v16h16V6h-4zm-6-2a2 2 0 0 1 4 0v2h-4V4zm8 16H6V8h12v12z"/></svg></span>Productos</a>
                         </div>
                     </div>
                     <div class="menu-group">
-                        <button class="menu-btn">Existencias <span class="icon">&#9662;</span></button>
+                        <button class="menu-btn"><span style="vertical-align:middle;margin-right:10px;"><svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path fill="#222" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 17.93V20h-2v-.07A8.001 8.001 0 0 1 4.07 13H4v-2h.07A8.001 8.001 0 0 1 11 4.07V4h2v.07A8.001 8.001 0 0 1 19.93 11H20v2h-.07A8.001 8.001 0 0 1 13 19.93z"/></svg></span>Existencias<span class="icon">&#9662;</span></button>
                         <div class="submenu">
-                            <a href="existencias.html" class="submenu-btn">Existencias</a>
+                            <a href="existencias.html" class="submenu-btn"><span style="vertical-align:middle;margin-right:8px;"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path fill="#222" d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></span>Existencias</a>
                         </div>
                     </div>
                 </nav>
@@ -34,32 +35,45 @@
                 </div>
             </aside>
             <main class="main-content">
-                <section class="content-section">
-                    <div class="section-header">
-                        <h1>Editar Producto</h1>
+                <section class="content-section" style="background:linear-gradient(135deg,#f8fafc 60%,#e0e7ff 100%);box-shadow:0 4px 16px 0 rgba(99,102,241,0.10);max-width:540px;margin:auto;">
+                    <div class="section-header" style="justify-content:center;gap:1.5rem;">
+                        <h1 style="font-size:2.1rem;color:#6366f1;display:flex;align-items:center;gap:0.7rem;">
+                            <span style="font-size:2.2rem;">✏️</span> Editar Producto
+                        </h1>
+                        <div class="actions" style="margin-left:0;">
+                            <a href="productos.html" class="btn-secondary" style="font-size:1.08rem;box-shadow:0 2px 8px 0 #6366f133;">Cancelar</a>
+                        </div>
                     </div>
-                    <div class="form-container">
-                        <form id="editar-producto-form">
+                    <div class="form-container" style="background:#fff;border-radius:14px;box-shadow:0 2px 10px 0 #6366f11a;padding:2rem 1.5rem 1.5rem 1.5rem;margin-top:1.2rem;">
+                        <form id="editar-producto-form" autocomplete="off">
                             <input type="hidden" id="producto-id">
-                            <div class="form-group">
-                                <label for="nombre">Nombre:</label>
-                                <input type="text" id="nombre" name="nombre" required>
+                            <div class="form-group" style="margin-bottom:1.3rem;">
+                                <label for="nombre" style="font-weight:600;color:#4f46e5;">Nombre del producto <span style="color:#ef4444;">*</span></label>
+                                <input type="text" id="nombre" name="nombre" required style="width:100%;padding:0.7rem 1rem;border-radius:8px;border:1px solid #e0e7ff;font-size:1.08rem;margin-top:0.3rem;">
                             </div>
-                            <div class="form-group">
-                                <label for="categoria">Categoría:</label>
-                                <input type="text" id="categoria" name="categoria">
+                            <div class="form-group" style="margin-bottom:1.3rem;">
+                                <label for="categoria_id" style="font-weight:600;color:#4f46e5;">Categoría <span style="color:#ef4444;">*</span></label>
+                                <select id="categoria_id" name="categoria_id" required style="width:100%;padding:0.7rem 1rem;border-radius:8px;border:1px solid #e0e7ff;font-size:1.08rem;margin-top:0.3rem;background:#f8fafc;">
+                                    <option value="">Seleccionar categoría</option>
+                                </select>
                             </div>
-                            <div class="form-group">
-                                <label for="precio">Precio:</label>
-                                <input type="number" id="precio" name="precio" step="0.01">
+                            <div class="form-group" style="margin-bottom:1.3rem;display:flex;gap:1rem;flex-wrap:wrap;">
+                                <div style="flex:1 1 120px;min-width:120px;">
+                                    <label for="precio" style="font-weight:600;color:#4f46e5;">Precio <span style="color:#ef4444;">*</span></label>
+                                    <input type="number" id="precio" name="precio" step="0.01" required style="width:100%;padding:0.7rem 1rem;border-radius:8px;border:1px solid #e0e7ff;font-size:1.08rem;margin-top:0.3rem;">
+                                </div>
+                                <div style="flex:1 1 120px;min-width:120px;">
+                                    <label for="stock" style="font-weight:600;color:#4f46e5;">Stock <span style="color:#ef4444;">*</span></label>
+                                    <input type="number" id="stock" name="stock" required style="width:100%;padding:0.7rem 1rem;border-radius:8px;border:1px solid #e0e7ff;font-size:1.08rem;margin-top:0.3rem;">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="stock">Stock:</label>
-                                <input type="number" id="stock" name="stock">
+                            <div class="form-actions" style="text-align:center;margin-top:2rem;">
+                                <button type="submit" class="btn-primary" id="btn-guardar" style="font-size:1.13rem;min-width:160px;box-shadow:0 2px 8px 0 #6366f133;" disabled>Guardar Cambios</button>
                             </div>
-                            <button type="submit" class="btn-primary">Guardar Cambios</button>
-                            <a href="productos.html" class="btn-secondary">Cancelar</a>
                         </form>
+                        <div style="margin-top:2.2rem;text-align:center;color:#aaa;font-size:0.98rem;">
+                            <span style="font-size:1.3rem;vertical-align:middle;">💡</span> Los campos marcados con <span style="color:#ef4444;font-weight:bold;">*</span> son obligatorios.
+                        </div>
                     </div>
                 </section>
             </main>
@@ -67,5 +81,117 @@
     </div>
 
     <script src="js/common.js"></script>
-    <script src="js/editar_producto.js"></script> </body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const editarProductoForm = document.getElementById('editar-producto-form');
+            const productoIdInput = document.getElementById('producto-id');
+            const nombreInput = document.getElementById('nombre');
+            const categoriaSelect = document.getElementById('categoria_id');
+            const precioInput = document.getElementById('precio');
+            const stockInput = document.getElementById('stock');
+            const btnGuardar = document.getElementById('btn-guardar');
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            console.log('ID de la URL:', id);
+
+            async function cargarCategorias() {
+                try {
+                    const response = await fetch('/.netlify/functions/obtener_categorias');
+                    const categorias = await response.json();
+                    categorias.forEach(categoria => {
+                        const option = document.createElement('option');
+                        option.value = categoria.id;
+                        option.textContent = categoria.nombre;
+                        categoriaSelect.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error('Error al cargar las categorías:', error);
+                    alert('Error al cargar las categorías.');
+                }
+            }
+
+            async function cargarProducto(id) {
+                try {
+                    const response = await fetch(`/.netlify/functions/obtener_producto?id=${id}`);
+                    if (response.ok) {
+                        const producto = await response.json();
+                        console.log('Producto cargado:', producto); // <-- Nuevo console.log
+                        productoIdInput.value = producto.id;
+                        console.log('Valor asignado a productoIdInput:', productoIdInput.value); // <-- Nuevo console.log
+                        nombreInput.value = producto.nombre;
+                        categoriaSelect.value = producto.categoria_id;
+                        precioInput.value = producto.precio;
+                        stockInput.value = producto.stock;
+                        btnGuardar.disabled = false; // Habilitar el botón cuando el producto esté cargado
+                    } else {
+                        alert('Error al cargar el producto para editar.');
+                        window.location.href = 'productos.html';
+                    }
+                } catch (error) {
+                    console.error('Error al cargar el producto:', error);
+                    alert('Error al cargar el producto.');
+                    window.location.href = 'productos.html';
+                }
+            }
+
+            cargarCategorias();
+
+            if (id) {
+                console.log('Cargando producto con ID:', id); // <-- Nuevo console.log
+                cargarProducto(id);
+            } else {
+                console.log('No hay ID válido en la URL.');
+                window.location.href = 'productos.html';
+            }
+
+            editarProductoForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const nombre = nombreInput.value.trim();
+                const categoria_id = categoriaSelect.value;
+                const precio = parseFloat(precioInput.value);
+                const stock = parseInt(stockInput.value);
+                const productoId = productoIdInput.value;
+                const descripcion = '';
+                console.log('Valor de productoIdInput al enviar:', productoId); // <-- Nuevo console.log
+
+                if (!productoId) {
+                    alert('Error: No se encontró el ID del producto. No se puede actualizar.');
+                    return;
+                }
+
+                if (nombre && categoria_id) {
+                    try {
+                        const response = await fetch(`/.netlify/functions/actualizar_producto?id=${productoId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                id: productoId,
+                                nombre: nombre,
+                                categoria_id: categoria_id,
+                                precio: precio,
+                                stock: stock,
+                                descripcion: descripcion
+                            }),
+                        });
+
+                        if (response.ok) {
+                            alert('Producto actualizado con éxito.');
+                            window.location.href = 'productos.html';
+                        } else {
+                            const errorData = await response.json();
+                            alert('Error al actualizar el producto: ' + (errorData.message || ''));
+                        }
+                    } catch (error) {
+                        console.error('Error al enviar la petición para actualizar el producto:', error);
+                        alert('Error al actualizar el producto.');
+                    }
+                } else {
+                    alert('El nombre y la categoría del producto son obligatorios.');
+                }
+            });
+        });
+    </script>
+</body>
 </html>

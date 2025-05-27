@@ -1,17 +1,26 @@
-async function cargarDatosDashboard() {
-    try {
-        const productosResponse = await fetch('http://localhost:3000/api/productos/count');
-        const productosData = await productosResponse.json();
-        const existenciasResponse = await fetch('http://localhost:3000/api/existencias/total');
-        const existenciasData = await existenciasResponse.json();
+document.addEventListener('DOMContentLoaded', function() {
+    const totalProductosElement = document.getElementById('total-productos');
+    const totalExistenciasElement = document.getElementById('total-existencias');
 
-        document.getElementById('total-productos').textContent = productosData.total;
-        document.getElementById('total-existencias').textContent = existenciasData.total;
+    async function cargarEstadisticas() {
+        try {
+            const productosResponse = await fetch('/.netlify/functions/obtener_total_productos');
+            const productosData = await productosResponse.json();
+            totalProductosElement.textContent = productosData.total || 0;
+        } catch (error) {
+            console.error('Error al cargar el total de productos:', error);
+            totalProductosElement.textContent = 'Error';
+        }
 
-    } catch (error) {
-        console.error('Error al cargar datos del dashboard:', error);
-        // Podrías mostrar un mensaje de error en la página si lo deseas
+        try {
+            const existenciasResponse = await fetch('/.netlify/functions/obtener_total_existencias');
+            const existenciasData = await existenciasResponse.json();
+            totalExistenciasElement.textContent = existenciasData.total || 0;
+        } catch (error) {
+            console.error('Error al cargar el total de existencias:', error);
+            totalExistenciasElement.textContent = 'Error';
+        }
     }
-}
 
-document.addEventListener('DOMContentLoaded', cargarDatosDashboard);
+    cargarEstadisticas();
+});

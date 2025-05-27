@@ -48,109 +48,115 @@
             </aside>
 
             <main class="main-content">
-                <section class="content-section">
-                    <div class="section-header">
-                        <h1>Nuevo Producto</h1>
-                        <div class="actions">
-                            <a href="productos.html" class="btn-secondary">Cancelar</a>
-                        </div>
+              <section class="content-section" style="background:linear-gradient(135deg,#f8fafc 60%,#e0e7ff 100%);box-shadow:0 4px 16px 0 rgba(99,102,241,0.10);max-width:540px;margin:auto;">
+                <div class="section-header" style="justify-content:center;gap:1.5rem;">
+                  <h1 style="font-size:2.1rem;color:#6366f1;display:flex;align-items:center;gap:0.7rem;">
+                    <span style="font-size:2.2rem;">🧵</span> Nuevo Producto
+                  </h1>
+                  <div class="actions" style="margin-left:0;">
+                    <a href="productos.html" class="btn-secondary" style="font-size:1.08rem;box-shadow:0 2px 8px 0 #6366f133;">Cancelar</a>
+                  </div>
+                </div>
+                <div class="form-container" style="background:#fff;border-radius:14px;box-shadow:0 2px 10px 0 #6366f11a;padding:2rem 1.5rem 1.5rem 1.5rem;margin-top:1.2rem;">
+                  <form id="nuevo-producto-form" autocomplete="off">
+                    <div class="form-group" style="margin-bottom:1.3rem;">
+                      <label for="producto-nombre" style="font-weight:600;color:#4f46e5;">Nombre del producto <span style="color:#ef4444;">*</span></label>
+                      <input type="text" id="producto-nombre" required style="width:100%;padding:0.7rem 1rem;border-radius:8px;border:1px solid #e0e7ff;font-size:1.08rem;margin-top:0.3rem;">
                     </div>
-
-                    <div class="form-container">
-                        <form id="nuevo-producto-form">
-                            <div class="form-group">
-                                <label for="producto-nombre">Nombre del producto</label>
-                                <input type="text" id="producto-nombre" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="producto-categoria">Categoría</label>
-                                <select id="producto-categoria">
-                                    
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="producto-precio">Precio</label>
-                                <input type="number" id="producto-precio" step="0.01" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="producto-stock">Stock</label>
-                                <input type="number" id="producto-stock" required>
-                            </div>
-                            
-                            <div class="form-actions">
-                                <button type="submit" class="btn-primary">Guardar Producto</button>
-                                </div>
-                            </form>
+                    <div class="form-group" style="margin-bottom:1.3rem;">
+                      <label for="producto-descripcion" style="font-weight:600;color:#4f46e5;">Descripción (opcional)</label>
+                      <textarea id="producto-descripcion" rows="3" style="width:100%;padding:0.7rem 1rem;border-radius:8px;border:1px solid #e0e7ff;font-size:1.08rem;margin-top:0.3rem;"></textarea>
                     </div>
-                </section>
+                    <div class="form-group" style="margin-bottom:1.3rem;">
+                      <label for="producto-categoria" style="font-weight:600;color:#4f46e5;">Categoría <span style="color:#ef4444;">*</span></label>
+                      <select id="producto-categoria" required style="width:100%;padding:0.7rem 1rem;border-radius:8px;border:1px solid #e0e7ff;font-size:1.08rem;margin-top:0.3rem;background:#f8fafc;">
+                        <option value="">Seleccionar categoría</option>
+                      </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom:1.3rem;display:flex;gap:1rem;flex-wrap:wrap;">
+                      <div style="flex:1 1 120px;min-width:120px;">
+                        <label for="producto-precio" style="font-weight:600;color:#4f46e5;">Precio <span style="color:#ef4444;">*</span></label>
+                        <input type="number" id="producto-precio" step="0.01" required style="width:100%;padding:0.7rem 1rem;border-radius:8px;border:1px solid #e0e7ff;font-size:1.08rem;margin-top:0.3rem;">
+                      </div>
+                      <div style="flex:1 1 120px;min-width:120px;">
+                        <label for="producto-stock" style="font-weight:600;color:#4f46e5;">Stock inicial <span style="color:#ef4444;">*</span></label>
+                        <input type="number" id="producto-stock" value="0" required style="width:100%;padding:0.7rem 1rem;border-radius:8px;border:1px solid #e0e7ff;font-size:1.08rem;margin-top:0.3rem;">
+                      </div>
+                    </div>
+                    <div class="form-actions" style="text-align:center;margin-top:2rem;">
+                      <button type="submit" class="btn-primary" style="font-size:1.13rem;min-width:160px;box-shadow:0 2px 8px 0 #6366f133;">Guardar Producto</button>
+                    </div>
+                  </form>
+                  <div style="margin-top:2.2rem;text-align:center;color:#aaa;font-size:0.98rem;">
+                    <span style="font-size:1.3rem;vertical-align:middle;">💡</span> Los campos marcados con <span style="color:#ef4444;font-weight:bold;">*</span> son obligatorios.
+                  </div>
+                </div>
+              </section>
             </main>
         </div>
     </div>
 
     <script src="js/common.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
+            const categoriaSelect = document.getElementById('producto-categoria');
             const nuevoProductoForm = document.getElementById('nuevo-producto-form');
-            if (nuevoProductoForm) {
-                nuevoProductoForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    const nombre = document.getElementById('producto-nombre').value.trim();
-                    const categoria = document.getElementById('producto-categoria').value;
-                    const precio = parseFloat(document.getElementById('producto-precio').value);
-                    const stock = parseInt(document.getElementById('producto-stock').value);
-                
 
-                    if (nombre && !isNaN(precio) && !isNaN(stock)) {
-                        const nuevoProducto = { nombre, categoria, precio, stock};
-
-                        try {
-                            const response = await fetch('http://localhost:3000/api/productos', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(nuevoProducto),
-                            });
-
-                            if (response.ok) {
-                                alert('Producto creado con éxito.');
-                                window.location.href = 'productos.html';
-                            } else {
-                                const errorData = await response.json();
-                                alert('Error al crear el producto: ' + (errorData.message || ''));
-                            }
-                        } catch (error) {
-                            console.error('Error al enviar la petición para crear producto:', error);
-                            alert('Error al crear el producto.');
-                        }
-                    } else {
-                        alert('El nombre, precio y stock del producto son obligatorios y deben ser números válidos.');
-                    }
-                });
-            }
-
-            async function cargarCategoriasParaFormulario() {
-                const categoriaSelect = document.getElementById('producto-categoria');
+            // Cargar las categorías dinámicamente desde la base de datos
+            async function cargarCategorias() {
                 try {
-                    const response = await fetch('http://localhost:3000/api/categorias');
-                    const categorias = await response.json();
-                    categorias.forEach(cat => {
-                        const option = document.createElement('option');
-                        option.value = cat.nombre; // O cat._id, dependiendo de cómo quieras manejarlo
-                        option.textContent = cat.nombre;
-                        categoriaSelect.appendChild(option);
-                    });
+                    const response = await fetch('/.netlify/functions/obtener_categorias');
+                    if (response.ok) {
+                        const categorias = await response.json();
+                        categorias.forEach(categoria => {
+                            const option = document.createElement('option');
+                            option.value = categoria.id;
+                            option.textContent = categoria.nombre;
+                            categoriaSelect.appendChild(option);
+                        });
+                    } else {
+                        console.error('Error al cargar las categorías.');
+                    }
                 } catch (error) {
-                    console.error('Error al cargar las categorías para el formulario:', error);
-                    const option = document.createElement('option');
-                    option.value = '';
-                    option.textContent = 'Error al cargar categorías';
-                    categoriaSelect.appendChild(option);
-                    categoriaSelect.disabled = true;
+                    console.error('Error al cargar las categorías:', error);
                 }
             }
 
-            cargarCategoriasParaFormulario();
+            await cargarCategorias();
+
+            nuevoProductoForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const nombre = document.getElementById('producto-nombre').value.trim();
+                const descripcion = document.getElementById('producto-descripcion').value.trim();
+                const categoriaId = document.getElementById('producto-categoria').value;
+                const precio = parseFloat(document.getElementById('producto-precio').value);
+                const stock = parseInt(document.getElementById('producto-stock').value);
+
+                if (nombre && categoriaId && !isNaN(precio) && !isNaN(stock)) {
+                    try {
+                        const response = await fetch('/.netlify/functions/crear_producto', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ nombre, descripcion, categoria_id: categoriaId, precio, stock }),
+                        });
+
+                        if (response.ok) {
+                            alert('Producto creado con éxito.');
+                            window.location.href = 'productos.html';
+                        } else {
+                            const errorData = await response.json();
+                            alert('Error al crear el producto: ' + (errorData.message || ''));
+                        }
+                    } catch (error) {
+                        console.error('Error al enviar la petición para crear producto:', error);
+                        alert('Error al crear el producto.');
+                    }
+                } else {
+                    alert('Por favor, completa todos los campos requeridos.');
+                }
+            });
         });
     </script>
 </body>

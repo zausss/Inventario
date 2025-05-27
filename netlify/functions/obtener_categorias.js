@@ -1,26 +1,30 @@
-const { MongoClient } = require('mongodb');
-const uri = process.env.MONGODB_URI;
+const { conectarDB, cerrarDB, ejecutarConsulta } = require('./db');
 
-exports.handler = async (event, context) => {
-  let client;
-  try {
-    client = new MongoClient(uri);
-    await client.connect();
-    const db = client.db('inventario_hilos'); // Asegúrate de que este sea el nombre correcto de tu base de datos en Atlas
-    const categorias = await db.collection('categorias').find().toArray();
-    return {
-      statusCode: 200,
-      body: JSON.stringify(categorias),
-      headers: { 'Content-Type': 'application/json' },
-    };
-  } catch (error) {
-    console.error('Error al obtener las categorías:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: 'Error al obtener las categorías desde la base de datos' }),
-      headers: { 'Content-Type': 'application/json' },
-    };
-  } finally {
-    if (client) await client.close();
-  }
+exports.handler = async (event) => {
+    if (event.httpMethod !== 'GET') {
+        return { statusCode: 405, body: 'Method Not Allowed' };
+    }
+
+    let db;
+    try {
+        db = await conectarDB();
+        const sql = `
+            SELECT id, nombre, descripcion
+            FROM categorias
+        `;
+        const categorias = await ejecutarConsulta(db, sql);
+        await cerrarDB(db);
+
+        return {
+            statusCode: 200,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(categorias)
+        };
+
+    } catch (error) {
+        console.error('Error al obtener las categorías:', error);
+        return { statusCode: 500, body: JSON.stringify({ message: 'Error al obtener las categorías: ' + error.message }) };
+    }
 };

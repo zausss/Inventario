@@ -16,28 +16,18 @@
                 </div>
 
                 <nav class="menu">
-                    <a href="index.html" class="menu-btn">
-                        Menú
-                    </a>
-
+                    <a href="index.html" class="menu-btn"><span style="vertical-align:middle;margin-right:10px;"><svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path fill="#222" d="M3 12l9-9 9 9-1.41 1.41L12 5.83l-7.59 7.58z"/></svg></span>Menú</a>
                     <div class="menu-group">
-                        <button class="menu-btn active">
-                            Gestión de productos
-                            <span class="icon">&#9662;</span>
-                        </button>
+                        <button class="menu-btn active"><span style="vertical-align:middle;margin-right:10px;"><svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path fill="#222" d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></svg></span>Gestión de productos<span class="icon">&#9662;</span></button>
                         <div class="submenu" style="max-height: 300px;">
-                            <a href="categorias.html" class="submenu-btn active">Categorías</a>
-                            <a href="productos.html" class="submenu-btn">Productos</a>
+                            <a href="categorias.html" class="submenu-btn active"><span style="vertical-align:middle;margin-right:8px;"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path fill="#222" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg></span>Categorías</a>
+                            <a href="productos.html" class="submenu-btn"><span style="vertical-align:middle;margin-right:8px;"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path fill="#222" d="M16 6V4a4 4 0 0 0-8 0v2H4v16h16V6h-4zm-6-2a2 2 0 0 1 4 0v2h-4V4zm8 16H6V8h12v12z"/></svg></span>Productos</a>
                         </div>
                     </div>
-
                     <div class="menu-group">
-                        <button class="menu-btn">
-                            Existencias
-                            <span class="icon">&#9662;</span>
-                        </button>
+                        <button class="menu-btn"><span style="vertical-align:middle;margin-right:10px;"><svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path fill="#222" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 17.93V20h-2v-.07A8.001 8.001 0 0 1 4.07 13H4v-2h.07A8.001 8.001 0 0 1 11 4.07V4h2v.07A8.001 8.001 0 0 1 19.93 11H20v2h-.07A8.001 8.001 0 0 1 13 19.93z"/></svg></span>Existencias<span class="icon">&#9662;</span></button>
                         <div class="submenu">
-                            <a href="existencias.html" class="submenu-btn">Existencias</a>
+                            <a href="existencias.html" class="submenu-btn"><span style="vertical-align:middle;margin-right:8px;"><svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path fill="#222" d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></span>Existencias</a>
                         </div>
                     </div>
                 </nav>
@@ -48,37 +38,40 @@
             </aside>
 
             <main class="main-content">
-                <section class="content-section">
-                    <div class="section-header">
-                        <h1>Lista de Categorías</h1>
-                        <div class="actions">
-                            <div class="search-box">
-                                <input type="text" id="buscar-categoria" placeholder="Buscar categoría...">
-                                <button class="search-btn">Buscar</button>
-                            </div>
-                            <a href="nueva_categoria.html" class="btn-primary">
-                                <span>+</span> Nueva Categoría
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Descripción</th>
-                                    <th>Productos</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="categorias-list">
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-            </main>
+  <section class="content-section" style="background:linear-gradient(135deg,#f8fafc 60%,#e0e7ff 100%);box-shadow:0 4px 16px 0 rgba(99,102,241,0.10);">
+    <div class="section-header">
+      <h1 style="font-size:2.1rem;color:#6366f1;display:flex;align-items:center;gap:0.7rem;">
+        <span style="font-size:2.2rem;">📂</span> Categorías de Productos
+      </h1>
+      <div class="actions">
+        <div class="search-box">
+          <input type="text" id="buscar-categoria" placeholder="Buscar categoría...">
+          <button class="search-btn" id="boton-buscar-categoria">Buscar</button>
+        </div>
+        <a href="nueva_categoria.html" class="btn-primary" style="font-size:1.08rem;box-shadow:0 2px 8px 0 #6366f133;">
+          <span style="font-size:1.3rem;vertical-align:middle;">➕</span> Nueva Categoría
+        </a>
+      </div>
+    </div>
+    <div class="table-container" style="background:#fff;border-radius:12px;box-shadow:0 2px 10px 0 #6366f11a;padding:1.2rem 0.5rem;">
+      <table class="data-table" style="width:100%;border-collapse:separate;border-spacing:0 0.5rem;">
+        <thead>
+          <tr style="background:#e0e7ff;color:#4f46e5;font-size:1.08rem;">
+            <th style="border-radius:8px 0 0 8px;padding:0.7rem 0.5rem;">ID</th>
+            <th style="padding:0.7rem 0.5rem;">Nombre</th>
+            <th style="padding:0.7rem 0.5rem;">Descripción</th>
+            <th style="border-radius:0 8px 8px 0;padding:0.7rem 0.5rem;">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="categorias-list">
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:2.5rem;text-align:center;color:#aaa;font-size:0.98rem;">
+      <span style="font-size:1.3rem;vertical-align:middle;">💡</span> Puedes editar o eliminar categorías fácilmente desde aquí.
+    </div>
+  </section>
+</main>
         </div>
     </div>
 
@@ -86,67 +79,108 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const categoriasList = document.getElementById('categorias-list');
+            const buscarInput = document.getElementById('buscar-categoria');
+            const botonBuscar = document.getElementById('boton-buscar-categoria');
 
             async function cargarCategorias() {
                 try {
-                    const response = await fetch('http://localhost:3000/api/categorias');
+                    const response = await fetch('/.netlify/functions/obtener_categorias');
                     const categorias = await response.json();
-
-                    categoriasList.innerHTML = '';
-
-                    categorias.forEach(categoria => {
-                        const newRow = categoriasList.insertRow();
-                        const idCell = newRow.insertCell(0);
-                        const nombreCell = newRow.insertCell(1);
-                        const descripcionCell = newRow.insertCell(2);
-                        const productosCell = newRow.insertCell(3);
-                        const accionesCell = newRow.insertCell(4);
-
-                        idCell.textContent = categoria._id.substring(0, 8);
-                        nombreCell.textContent = categoria.nombre;
-                        descripcionCell.textContent = categoria.descripcion || '';
-                        productosCell.textContent = 0; // Necesitaríamos otra API para obtener la cantidad de productos por categoría
-
-                        const editButton = document.createElement('button');
-                        editButton.textContent = 'Editar';
-                        editButton.classList.add('action-btn', 'edit-btn');
-                        editButton.addEventListener('click', () => {
-                            window.location.href = `editar_categoria.html?id=${categoria._id}`; // Usar el ID completo
-                        });
-
-                        const deleteButton = document.createElement('button');
-                        deleteButton.textContent = 'Eliminar';
-                        deleteButton.classList.add('action-btn', 'delete-btn');
-                        deleteButton.addEventListener('click', async () => {
-                            if (confirm(`¿Estás seguro de que quieres eliminar la categoría "${categoria.nombre}"?`)) {
-                                try {
-                                    const response = await fetch(`http://localhost:3000/api/categorias/${categoria._id}`, {
-                                        method: 'DELETE',
-                                    });
-                                    if (response.ok) {
-                                        alert('Categoría eliminada con éxito.');
-                                        cargarCategorias(); // Recargar la lista
-                                    } else {
-                                        const errorData = await response.json();
-                                        alert('Error al eliminar la categoría: ' + (errorData.message || ''));
-                                    }
-                                } catch (error) {
-                                    console.error('Error al enviar la petición para eliminar categoría:', error);
-                                    alert('Error al eliminar la categoría.');
-                                }
-                            }
-                        });
-
-                        accionesCell.appendChild(editButton);
-                        accionesCell.appendChild(deleteButton);
-                    });
+                    mostrarCategorias(categorias);
                 } catch (error) {
                     console.error('Error al cargar las categorías:', error);
-                    categoriasList.innerHTML = '<tr><td colspan="5">Error al cargar las categorías.</td></tr>';
+                    categoriasList.innerHTML = '<tr><td colspan="4">Error al cargar las categorías.</td></tr>';
                 }
             }
 
-            cargarCategorias();
+            async function buscarCategorias(termino) {
+                try {
+                    const response = await fetch(`/.netlify/functions/buscar_categorias?termino=${termino}`);
+                    if (response.ok) {
+                        const categorias = await response.json();
+                        mostrarCategorias(categorias);
+                    } else {
+                        console.error('Error al buscar las categorías.');
+                        categoriasList.innerHTML = '<tr><td colspan="4">Error al buscar las categorías.</td></tr>';
+                    }
+                } catch (error) {
+                    console.error('Error al buscar las categorías:', error);
+                    categoriasList.innerHTML = '<tr><td colspan="4">Error de red al buscar las categorías.</td></tr>';
+                }
+            }
+
+            function mostrarCategorias(categorias) {
+                categoriasList.innerHTML = '';
+                if (categorias.length === 0) {
+                  categoriasList.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#aaa;font-size:1.1rem;">No hay categorías registradas.</td></tr>';
+                  return;
+                }
+                categorias.forEach(categoria => {
+                    const newRow = categoriasList.insertRow();
+                    newRow.style.background = '#f8fafc';
+                    newRow.style.borderRadius = '8px';
+                    newRow.style.boxShadow = '0 1px 6px 0 #6366f11a';
+                    const idCell = newRow.insertCell(0);
+                    const nombreCell = newRow.insertCell(1);
+                    const descripcionCell = newRow.insertCell(2);
+                    const accionesCell = newRow.insertCell(3);
+
+                    idCell.textContent = categoria.id;
+                    nombreCell.textContent = categoria.nombre;
+                    descripcionCell.textContent = categoria.descripcion || '';
+
+                    const editButton = document.createElement('button');
+                    editButton.textContent = 'Editar';
+                    editButton.className = 'btn-secondary';
+                    editButton.style.margin = '0 8px 0 0';
+                    editButton.onclick = () => {
+                        const id = categoria.id;
+                        window.location.href = `editar_categoria.html?id=${id}`;
+                    };
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Eliminar';
+                    deleteButton.className = 'btn-danger';
+                    deleteButton.onclick = async () => {
+                        if (confirm(`¿Estás seguro de que quieres eliminar la categoría "${categoria.nombre}"?`)) {
+                            try {
+                                const response = await fetch(`/.netlify/functions/eliminar_categoria?id=${categoria.id}`, {
+                                    method: 'DELETE',
+                                });
+                                if (response.ok) {
+                                    alert('Categoría eliminada con éxito.');
+                                    cargarCategorias();
+                                } else {
+                                    const errorData = await response.json();
+                                    alert('Error al eliminar la categoría: ' + (errorData.message || ''));
+                                }
+                            } catch (error) {
+                                console.error('Error al enviar la petición para eliminar categoría:', error);
+                                alert('Error al eliminar la categoría.');
+                            }
+                        }
+                    };
+                    accionesCell.appendChild(editButton);
+                    accionesCell.appendChild(deleteButton);
+                });
+            }
+
+            botonBuscar.addEventListener('click', function() {
+                const terminoBusqueda = buscarInput.value.trim();
+                if (terminoBusqueda) {
+                    buscarCategorias(terminoBusqueda);
+                } else {
+                    cargarCategorias(); // Si no hay término, recargar todas las categorías
+                }
+            });
+
+            buscarInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    botonBuscar.click(); // Simular un clic en el botón al presionar Enter
+                }
+            });
+
+            cargarCategorias(); // Llama a cargarCategorias DENTRO del listener
         });
     </script>
 </body>

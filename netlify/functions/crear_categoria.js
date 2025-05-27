@@ -1,40 +1,34 @@
-// netlify/functions/crear_categoria.js
-const { MongoClient } = require('mongodb');
-const uri = process.env.MONGODB_URI;
+const { conectarDB, cerrarDB } = require('./db');
 
-exports.handler = async (event, context) => {
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
-  }
-
-  try {
-    const client = new MongoClient(uri);
-    await client.connect();
-    const db = client.db('inventario_hilos');
-    const categoriasCollection = db.collection('categorias');
-    const nuevaCategoria = JSON.parse(event.body);
-
-    const result = await categoriasCollection.insertOne(nuevaCategoria);
-
-    return {
-      statusCode: 201,
-      body: JSON.stringify({ message: 'Categoría creada con éxito', id: result.insertedId }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-  } catch (error) {
-    console.error('Error al crear la categoría:', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: 'Error al crear la categoría en la base de datos' }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-  } finally {
-    if (client) {
-      await client.close();
+exports.handler = async (event) => {
+    if (event.httpMethod !== 'POST') {
+        return { statusCode: 405, body: 'Method Not Allowed' };
     }
-  }
+
+    const { nombre, descripcion } = JSON.parse(event.body);
+
+    if (!nombre) {
+        return { statusCode: 400, body: JSON.stringify({ message: 'El nombre es obligatorio.' }) };
+    }
+
+    let db;
+    try {
+        db = await conectarDB();
+        await new Promise((resolve, reject) => {
+            db.run('INSERT INTO categorias (nombre, descripcion) VALUES (?, ?)', [nombre, descripcion], function(err) {
+                if (err) {
+                    console.error('Error al insertar la categoría:', err);
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+        return { statusCode: 200, body: JSON.stringify({ message: 'Categoría creada con éxito.' }) };
+    } catch (error) {
+        console.error('Error al interactuar con la base de datos:', error);
+        return { statusCode: 500, body: JSON.stringify({ message: 'Error al crear la categoría: ' + error.message }) };
+    } finally {
+        await cerrarDB(db); // Asegúrate de cerrar la conexión
+    }
 };
