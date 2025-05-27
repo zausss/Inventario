@@ -1,4 +1,4 @@
-const { conectarDB, cerrarDB, ejecutarConsulta } = require('./db');
+const pool = require('./db_supabase');
 
 exports.handler = async (event) => {
     if (event.httpMethod !== 'GET') {
@@ -6,34 +6,19 @@ exports.handler = async (event) => {
     }
 
     try {
-        const db = await conectarDB();
-        const sql = `
-            SELECT
-                p.id,
-                p.nombre,
-                p.descripcion,
-                p.precio,
-                p.stock,
-                c.nombre AS categoria_nombre
-            FROM
-                productos p
-            LEFT JOIN
-                categorias c ON p.categoria_id = c.id
-        `;
-        const productos = await ejecutarConsulta(db, sql);
-        console.log('Productos obtenidos:', productos); // LOG DETALLADO
-        await cerrarDB(db);
-
+        const sql = `SELECT p.id, p.nombre, p.categoria_id, p.precio, p.stock, c.nombre AS categoria_nombre
+                     FROM productos p
+                     LEFT JOIN categorias c ON p.categoria_id = c.id`;
+        const result = await pool.query(sql);
         return {
             statusCode: 200,
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(productos)
+            body: JSON.stringify(result.rows)
         };
-
     } catch (error) {
         console.error('Error al obtener los productos:', error);
-        return { statusCode: 200, body: '[]' }; // Devuelve array vacío en caso de error para evitar romper el frontend
+        return { statusCode: 500, body: JSON.stringify({ message: 'Error al obtener los productos: ' + error.message }) };
     }
 };

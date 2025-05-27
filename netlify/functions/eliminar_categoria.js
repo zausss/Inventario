@@ -1,38 +1,20 @@
-const { conectarDB, cerrarDB } = require('./db'); // Asegúrate de que la ruta a db.js sea correcta
+const pool = require('./db_supabase');
 
 exports.handler = async (event) => {
     if (event.httpMethod !== 'DELETE') {
         return { statusCode: 405, body: 'Method Not Allowed' };
     }
 
-    const id = event.queryStringParameters.id;
-
+    const { id } = event.queryStringParameters || {};
     if (!id) {
-        return { statusCode: 400, body: JSON.stringify({ message: 'Se requiere el ID de la categoría para eliminar.' }) };
+        return { statusCode: 400, body: JSON.stringify({ message: 'Falta el parámetro id' }) };
     }
 
-    let db;
     try {
-        db = await conectarDB();
-        const result = await new Promise((resolve, reject) => { // Asignamos el resultado a la variable 'result'
-            db.run('DELETE FROM categorias WHERE id = ?', [id], function(err) {
-                if (err) {
-                    console.error('Error al eliminar la categoría:', err);
-                    reject(err);
-                } else if (this.changes > 0) {
-                    resolve({ message: `Categoría con ID ${id} eliminada correctamente.` });
-                } else {
-                    resolve({ message: `No se encontró ninguna categoría con el ID ${id}.` });
-                }
-            });
-        });
-
-        return { statusCode: 200, body: JSON.stringify(result) }; // Ahora 'result' está definida
-
+        await pool.query('DELETE FROM categorias WHERE id = $1', [id]);
+        return { statusCode: 200, body: JSON.stringify({ message: 'Categoría eliminada con éxito.' }) };
     } catch (error) {
-        console.error('Error al interactuar con la base de datos:', error);
+        console.error('Error al eliminar la categoría:', error);
         return { statusCode: 500, body: JSON.stringify({ message: 'Error al eliminar la categoría: ' + error.message }) };
-    } finally {
-        await cerrarDB(db);
     }
 };

@@ -1,18 +1,22 @@
-const { conectarDB, cerrarDB, ejecutarConsulta } = require('./db');
+const pool = require('./db_supabase');
 
 exports.handler = async (event) => {
+    if (event.httpMethod !== 'GET') {
+        return { statusCode: 405, body: 'Method Not Allowed' };
+    }
+
     try {
-        const db = await conectarDB();
-        const sql = 'SELECT SUM(stock) as total FROM productos';
-        const result = await ejecutarConsulta(db, sql);
-        await cerrarDB(db);
+        const sql = 'SELECT SUM(stock) AS total FROM productos';
+        const result = await pool.query(sql);
         return {
             statusCode: 200,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ total: result[0].total || 0 })
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ total: parseInt(result.rows[0].total || 0, 10) })
         };
     } catch (error) {
         console.error('Error al obtener el total de existencias:', error);
-        return { statusCode: 500, body: JSON.stringify({ message: 'Error al obtener el total de existencias.' }) };
+        return { statusCode: 500, body: JSON.stringify({ message: 'Error al obtener el total de existencias: ' + error.message }) };
     }
 };

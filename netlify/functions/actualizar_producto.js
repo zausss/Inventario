@@ -1,77 +1,23 @@
-const sqlite3 = require('sqlite3').verbose();
+const pool = require('./db_supabase');
 
 exports.handler = async (event) => {
-    const body = JSON.parse(event.body);
-    const productId = body.id;
-    const { nombre, categoria_id, precio, stock, descripcion } = body;
-
-    if (!productId) {
-        return {
-            statusCode: 400,
-            body: JSON.stringify({ message: "Se requiere el ID del producto para actualizar." }),
-        };
+    if (event.httpMethod !== 'PUT') {
+        return { statusCode: 405, body: 'Method Not Allowed' };
     }
 
-    if (!nombre || !categoria_id || typeof precio !== 'number' || typeof stock !== 'number') {
-        return {
-            statusCode: 400,
-            body: JSON.stringify({ message: "Se requieren todos los campos para actualizar el producto (nombre, categoria_id, precio, stock)." }),
-        };
+    const { id, nombre, categoria_id, precio, stock } = JSON.parse(event.body);
+    if (!id || !nombre || !categoria_id || typeof precio !== 'number' || typeof stock !== 'number') {
+        return { statusCode: 400, body: JSON.stringify({ message: 'Todos los campos son obligatorios.' }) };
     }
 
-    const dbPath = './netlify/functions/inventario.db';
-    const db = new sqlite3.Database(dbPath, (err) => {
-        if (err) {
-            console.error("Error al abrir la base de datos:", err.message);
-        } else {
-            console.log("Base de datos abierta correctamente.");
-        }
-    });
-
-    return new Promise((resolve, reject) => {
-        const query = `
-            UPDATE productos
-            SET nombre = ?,
-                categoria_id = ?,
-                precio = ?,
-                stock = ?,
-                descripcion = ?
-            WHERE id = ?
-        `;
-        const params = [nombre, categoria_id, precio, stock, descripcion || '', productId];
-
-        db.run(query, params, function (err) {
-            if (err) {
-                console.error(err.message);
-                resolve({
-                    statusCode: 500,
-                    body: JSON.stringify({ message: "Error al actualizar el producto." }),
-                });
-            } else if (this.changes > 0) {
-                resolve({
-                    statusCode: 200,
-                    body: JSON.stringify({
-                        id: productId,
-                        nombre: nombre,
-                        categoria_id: categoria_id,
-                        precio: precio,
-                        stock: stock
-                    }),
-                });
-            } else {
-                resolve({
-                    statusCode: 404,
-                    body: JSON.stringify({ message: "No se encontró el producto con el ID proporcionado." }),
-                });
-            }
-
-            db.close((err) => {
-                if (err) {
-                    console.error("Error al cerrar la base de datos:", err.message);
-                } else {
-                    console.log("Base de datos cerrada correctamente.");
-                }
-            });
-        });
-    });
+    try {
+        await pool.query(
+            'UPDATE productos SET nombre = $1, categoria_id = $2, precio = $3, stock = $4 WHERE id = $5',
+            [nombre, categoria_id, precio, stock, id]
+        );
+        return { statusCode: 200, body: JSON.stringify({ message: 'Producto actualizado con éxito.' }) };
+    } catch (error) {
+        console.error('Error al actualizar el producto:', error);
+        return { statusCode: 500, body: JSON.stringify({ message: 'Error al actualizar el producto: ' + error.message }) };
+    }
 };

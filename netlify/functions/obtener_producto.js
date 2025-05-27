@@ -1,53 +1,30 @@
-const sqlite3 = require('sqlite3').verbose();
+const pool = require('./db_supabase');
 
 exports.handler = async (event) => {
-    const productId = event.queryStringParameters.id;
-
-    if (!productId) {
-        return {
-            statusCode: 400,
-            body: JSON.stringify({ message: "Se requiere el ID del producto." }),
-        };
+    if (event.httpMethod !== 'GET') {
+        return { statusCode: 405, body: 'Method Not Allowed' };
     }
 
-    const dbPath = './netlify/functions/inventario.db'; // Corrijo la ruta para que apunte a la base de datos correcta
-    const db = new sqlite3.Database(dbPath, (err) => {
-        if (err) {
-            console.error("Error al abrir la base de datos:", err.message);
-        } else {
-            console.log("Base de datos abierta correctamente.");
+    const { id } = event.queryStringParameters || {};
+    if (!id) {
+        return { statusCode: 400, body: JSON.stringify({ message: 'Falta el parámetro id' }) };
+    }
+
+    try {
+        const sql = 'SELECT id, nombre, categoria_id, precio, stock FROM productos WHERE id = $1';
+        const result = await pool.query(sql, [id]);
+        if (result.rows.length === 0) {
+            return { statusCode: 404, body: JSON.stringify({ message: 'Producto no encontrado' }) };
         }
-    });
-
-    return new Promise((resolve, reject) => {
-        const query = `SELECT id, nombre, categoria_id, precio, stock, descripcion FROM productos WHERE id = ?`;
-
-        db.get(query, [productId], (err, row) => {
-            if (err) {
-                console.error(err.message);
-                resolve({
-                    statusCode: 500,
-                    body: JSON.stringify({ message: "Error al obtener el producto." }),
-                });
-            } else if (row) {
-                resolve({
-                    statusCode: 200,
-                    body: JSON.stringify(row),
-                });
-            } else {
-                resolve({
-                    statusCode: 404,
-                    body: JSON.stringify({ message: "Producto no encontrado." }),
-                });
-            }
-
-            db.close((err) => {
-                if (err) {
-                    console.error("Error al cerrar la base de datos:", err.message);
-                } else {
-                    console.log("Base de datos cerrada correctamente.");
-                }
-            });
-        });
-    });
+        return {
+            statusCode: 200,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(result.rows[0])
+        };
+    } catch (error) {
+        console.error('Error al obtener el producto:', error);
+        return { statusCode: 500, body: JSON.stringify({ message: 'Error al obtener el producto: ' + error.message }) };
+    }
 };

@@ -1,39 +1,28 @@
-const { conectarDB, cerrarDB, ejecutarConsulta } = require('./db');
+const pool = require('./db_supabase');
 
 exports.handler = async (event) => {
     if (event.httpMethod !== 'GET') {
         return { statusCode: 405, body: 'Method Not Allowed' };
     }
 
-    const id = event.queryStringParameters.id;
-
+    const { id } = event.queryStringParameters || {};
     if (!id) {
-        return { statusCode: 400, body: JSON.stringify({ message: 'Se requiere el ID de la categoría.' }) };
+        return { statusCode: 400, body: JSON.stringify({ message: 'Falta el parámetro id' }) };
     }
 
-    let db;
     try {
-        db = await conectarDB();
-        const sql = `
-            SELECT id, nombre, descripcion
-            FROM categorias
-            WHERE id = ?
-        `;
-        const categoria = await ejecutarConsulta(db, sql, [id]);
-        await cerrarDB(db);
-
-        if (categoria && categoria.length > 0) {
-            return {
-                statusCode: 200,
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(categoria[0]) // Enviamos el primer (y único) resultado
-            };
-        } else {
-            return { statusCode: 404, body: JSON.stringify({ message: 'Categoría no encontrada.' }) };
+        const sql = 'SELECT id, nombre, descripcion FROM categorias WHERE id = $1';
+        const result = await pool.query(sql, [id]);
+        if (result.rows.length === 0) {
+            return { statusCode: 404, body: JSON.stringify({ message: 'Categoría no encontrada' }) };
         }
-
+        return {
+            statusCode: 200,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(result.rows[0])
+        };
     } catch (error) {
         console.error('Error al obtener la categoría:', error);
         return { statusCode: 500, body: JSON.stringify({ message: 'Error al obtener la categoría: ' + error.message }) };
